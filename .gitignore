@@ -1,6 +1,3 @@
-builder/bins/jars/**
-builder/envs/**
-*.class
-*.log
-templater/results/**
-
+node_modules
+.DS_Store*
+.hubot_history
