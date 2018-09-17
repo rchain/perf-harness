@@ -230,10 +230,7 @@ object RNodeProtocol {
                   .forAddress(host, port)
                   .usePlaintext(true)
                   .build
-                ClientWithDetails(
-                  DeployServiceGrpc.stub(channel),
-                  host,
-                  port)
+                ClientWithDetails(DeployServiceGrpc.stub(channel), host, port)
             }
           val pool = RoundRobin(clients.toIndexedSeq)
           RNodeComponents(rnodeProtocol, clients, pool)
