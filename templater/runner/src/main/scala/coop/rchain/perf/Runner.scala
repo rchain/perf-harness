@@ -9,7 +9,9 @@ import coop.rchain.casper.protocol.DeployServiceGrpc.{
 import coop.rchain.casper.protocol.{
   DeployData,
   DeployServiceGrpc,
-  DeployServiceResponse
+  DeployServiceResponse,
+  PhloLimit,
+  PhloPrice
 }
 import io.gatling.commons.util.RoundRobin
 import io.gatling.commons.stats.{KO, OK}
@@ -62,8 +64,8 @@ object Deploy {
       .withTimestamp(System.currentTimeMillis())
       .withTerm(contract)
       .withFrom("0x1")
-      .withPhloLimit(0)
-      .withPhloPrice(0)
+      .withPhloLimit(PhloLimit(Integer.MAX_VALUE))
+      .withPhloPrice(PhloPrice(1))
       .withNonce(0)
     val r = client.client.doDeploy(d)
     r.map { res =>
