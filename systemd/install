@@ -8,7 +8,7 @@ copy_files() {
 	rsync -rt --exclude=/.git --filter=':- .gitignore' $projdir/ $D
 	git archive HEAD $projdir | tar -xC $D
 }
-copy_files()
+copy_files
 
 (
 umask 077
