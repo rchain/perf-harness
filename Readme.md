@@ -134,3 +134,48 @@ Services will be started on every boot. Check with
     systemctl status metrics
     systemctl status drone
     systemctl status hubot
+
+
+7. Set up nginx
+
+```
+# cat >/etc/nginx/sites-enabled/perf <<'EOF'
+server {
+
+    server_name drone.perf.rchain-dev.tk;
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+
+        proxy_set_header  Host               $host;
+        proxy_set_header  X-Real-IP          $remote_addr;
+        proxy_set_header  X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header  X-Forwarded-Proto  $scheme;
+        client_max_body_size 50m;
+    }
+}
+
+server {
+
+    server_name grafana.perf.rchain-dev.tk;
+
+    location / {
+        proxy_pass http://127.0.0.1:13000;
+
+        proxy_set_header  Host               $host;
+        proxy_set_header  X-Real-IP          $remote_addr;
+        proxy_set_header  X-Forwarded-For    $proxy_add_x_forwarded_for;
+        proxy_set_header  X-Forwarded-Proto  $scheme;
+    }
+}
+EOF
+```
+
+8. Add DNS records for `drone.perf.rchain-dev.tk` and `grafana.perf.rchain-dev.tk`
+9. Set up nginx TLS certificate
+
+Follow https://certbot.eff.org/lets-encrypt/ubuntubionic-nginx
+
+### Renewing the TLS certificate
+
+    $ certbox renew
