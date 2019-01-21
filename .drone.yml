@@ -57,7 +57,7 @@ pipeline:
       - echo $CONTRACT
       - echo $RNODE_IMAGE_VERSION
       - docker pull rchain/rnode:dev
-      - ci/patch-image-with-docker-package.sh rchain/rnode:dev rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
+      - docker image tag rchain/rnode:dev rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     when:
@@ -85,7 +85,7 @@ pipeline:
       - /opt/docker/bin/rnode -c ./drone/config/bootstrap.toml run
 
   wait-for-bootstrap:
-    image: rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
+    image: docker
     commands:
       - until ci/is-container-log-line-present.sh _step_4 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
     volumes:
@@ -124,7 +124,7 @@ pipeline:
       - /opt/docker/bin/rnode -c ./drone/config/validator4.toml run
 
   wait-for-validators:
-    image: rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
+    image: docker
     commands:
       - until ci/is-container-log-line-present.sh _step_6 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
       - until ci/is-container-log-line-present.sh _step_7 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
