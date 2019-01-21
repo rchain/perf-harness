@@ -50,7 +50,10 @@ lazy val runner = (project in file("runner"))
       gatlingTF,
       config,
     ),
-    dependencyOverrides += "org.bouncycastle" % "bcprov-jdk15on" % "1.59"
+    dependencyOverrides ++= Seq(
+	"org.bouncycastle" % "bcprov-jdk15on" % "1.59",
+	"com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
+    ),
   )
   .settings(
     assemblyJarName in assembly := "runner.jar",
