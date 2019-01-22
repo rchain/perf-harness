@@ -84,13 +84,19 @@ pipeline:
     commands:
       - /opt/docker/bin/rnode -c ./drone/config/bootstrap.toml run
 
+  wait-for-bootstrap:
+    image: docker
+    commands:
+      - until ci/is-container-log-line-present.sh _step_4 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
   validator1:
     image: rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     detach: true
     environment:
       - JAVA_OPTS=-Dkamon.metric.tick-interval=500ms
     commands:
-      - sleep 10
       - /opt/docker/bin/rnode -c ./drone/config/validator1.toml run
 
   validator2:
@@ -99,7 +105,6 @@ pipeline:
     environment:
       - JAVA_OPTS=-Dkamon.metric.tick-interval=500ms
     commands:
-      - sleep 10
       - /opt/docker/bin/rnode -c ./drone/config/validator2.toml run
 
   validator3:
@@ -108,7 +113,6 @@ pipeline:
     environment:
       - JAVA_OPTS=-Dkamon.metric.tick-interval=500ms
     commands:
-      - sleep 10
       - /opt/docker/bin/rnode -c ./drone/config/validator3.toml run
 
   validator4:
@@ -117,13 +121,21 @@ pipeline:
     environment:
       - JAVA_OPTS=-Dkamon.metric.tick-interval=500ms
     commands:
-      - sleep 10
       - /opt/docker/bin/rnode -c ./drone/config/validator4.toml run
+
+  wait-for-validators:
+    image: docker
+    commands:
+      - until ci/is-container-log-line-present.sh _step_6 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
+      - until ci/is-container-log-line-present.sh _step_7 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
+      - until ci/is-container-log-line-present.sh _step_8 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
+      - until ci/is-container-log-line-present.sh _step_9 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   deploy:
     image: rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     commands:
-      - sleep 40
       - /opt/docker/bin/rnode --grpc-host validator1 --grpc-port 30015 deploy --from "0x1" --phlo-limit 100000000 --phlo-price 1 --nonce 0 drone/config/contracts/tut-philosophers.rho
 
   propose:
