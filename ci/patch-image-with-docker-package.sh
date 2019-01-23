@@ -11,7 +11,7 @@ main () {
     original_image=$1; shift
     output_image=$1; shift
     docker_package=docker.io
-    if [ $# -lt 1 ]; then
+    if [ $# -lt 0 ]; then
         docker_package=$1; shift
     fi
 
