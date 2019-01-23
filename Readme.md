@@ -122,7 +122,11 @@ Bash, rsync and Git are required only for installation.
 
        HUBOT_DISCORD_TOKEN
 
-   Set this to token of a Discord bot you've created.
+   Set this to token of a [Discord bot you've created](https://discordapp.com/developers/applications/).  The token is
+   located under the 'Bots' tab.
+
+   Also, you will want to add the Discord bot to your server by following the link: `https://discordapp.com/api/oauth2/authorize?client_id=<CLIENT_ID>&scope=bot&permissions=1`
+   where the `<CLIENT_ID>` is copied over from `https://discordapp.com/developers/applications/` .
 
 6. Start the Hubot:
 
