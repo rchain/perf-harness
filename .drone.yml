@@ -58,7 +58,7 @@ pipeline:
       - echo $CONTRACT
       - echo $RNODE_IMAGE_VERSION
       - docker pull rchain/rnode:dev
-      - ci/patch-image-with-docker-package.sh rchain/rnode:dev rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
+      - ci/patch-image-with-docker-package.sh rchain/rnode:dev rchain/rnode:for_drone_${DRONE_BUILD_NUMBER} docker.io
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     when:
@@ -70,7 +70,7 @@ pipeline:
       - echo $CONTRACT
       - echo $RNODE_IMAGE_VERSION
       - docker pull rchain/rnode:$RNODE_IMAGE_VERSION
-      - ci/patch-image-with-docker-package.sh rchain/rnode:$RNODE_IMAGE_VERSION rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
+      - ci/patch-image-with-docker-package.sh rchain/rnode:$RNODE_IMAGE_VERSION rchain/rnode:for_drone_${DRONE_BUILD_NUMBER} docker.io
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     when:
