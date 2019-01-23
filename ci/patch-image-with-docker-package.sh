@@ -1,5 +1,7 @@
-#!/bin/bash -ue
+#!/bin/sh
 
+set -o nounset
+set -o errexit
 
 main () {
     if [[ $# -ne 2 ]]; then
