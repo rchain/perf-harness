@@ -41,9 +41,10 @@ pipeline:
     commands:
       - echo $CONTRACT
       - echo $RCHAIN_COMMIT_HASH
-      - cd /workdir/rchain
+      - pushd /workdir/rchain
       - git checkout $RCHAIN_COMMIT_HASH
       - sbt -Dsbt.ivy.home=/workdir/.ivy2 ";rholang/bnfc:generate; compile; node/docker:publishLocal"
+      - popd
       - ci/patch-image-with-docker-package.sh coop.rchain/rnode:DRONE-${DRONE_BUILD_NUMBER} rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
