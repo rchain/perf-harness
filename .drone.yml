@@ -44,7 +44,7 @@ pipeline:
       - cd /workdir/rchain
       - git checkout $RCHAIN_COMMIT_HASH
       - sbt -Dsbt.ivy.home=/workdir/.ivy2 ";rholang/bnfc:generate; compile; node/docker:publishLocal"
-      - docker image tag coop.rchain/rnode:latest rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
+      - docker image tag coop.rchain/rnode:DRONE-${DRONE_BUILD_NUMBER} rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     when:
