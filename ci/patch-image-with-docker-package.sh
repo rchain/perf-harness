@@ -3,6 +3,12 @@
 set -o nounset
 set -o errexit
 
+
+stop_container () {
+    [ -n "$container_hash" ] && docker stop "$container_hash"
+}
+
+
 main () {
     if [ $# -lt 3 ]; then
         echo "$0: wrong number of arguments; expected 3, got $#"
@@ -12,7 +18,9 @@ main () {
     output_image=$1; shift
     docker_package=$1; shift
 
+    trap stop_container EXIT
     container_hash=$(docker run --detach "$original_image")
+
     docker exec "$container_hash" apt update
     if [ "$docker_package" = docker.io ]; then
         docker exec "$container_hash" apt install --yes docker.io
@@ -24,7 +32,6 @@ main () {
         docker exec "$container_hash" apt install --yes docker-ce
     fi
     docker commit "$container_hash" "$output_image"
-    docker stop "$container_hash"
 }
 
 
