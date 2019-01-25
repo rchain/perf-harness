@@ -210,3 +210,11 @@ pipeline:
       - /workdir/.ivy2
     volumes:
       - /tmp/cache:/cache
+
+  clean-up-docker-images:
+    image: docker
+    commands:
+      - docker rmi --force $(docker images | awk '$2 ~ /for_drone_[0-9]*/ { print $3 }')
+      - docker rmi --force $(docker images | awk '$2 ~ /DRONE-[0-9]*/ { print $3 }')
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
