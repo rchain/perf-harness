@@ -214,7 +214,7 @@ pipeline:
   clean-up-docker-images:
     image: docker
     commands:
-      - docker rmi --force $(docker images | awk '$2 ~ /for_drone_[0-9]*/ { print $3 }')
-      - docker rmi --force $(docker images | awk '$2 ~ /DRONE-[0-9]*/ { print $3 }')
+      - docker images | awk "\$2 !~ /for_drone_$DRONE_BUILD_NUMBER/ { print }" | awk '$2 ~ /for_drone_[0-9]*/ { print $3 }' | xargs --no-run-if-empty docker rmi --force
+      - docker images | awk "\$2 !~ /DRONE-$DRONE_BUILD_NUMBER/ { print }" | awk '$2 ~ /DRONE-[0-9]*/ { print $3 }' | xargs --no-run-if-empty docker rmi --force
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
