@@ -4,8 +4,7 @@ After=docker.service drone.service
 StopWhenUnneeded=true
 [Service]
 ExecStart=/usr/bin/docker run --rm --name rchain-hubot --env-file=/etc/rchain-perf-harness/hubot.env rchain/rchain-hubot
-# It ignores INT/TERM. It's crap.
 ExecStop=/usr/bin/docker rm -f rchain-hubot
-SuccessExitStatus=137
+Restart=on-failure
 [Install]
 WantedBy=rchain-perf-harness.target
