@@ -12,6 +12,8 @@ networks:
 services:
   prometheus-pushgateway:
     image: prom/pushgateway
+    ports:
+      - 19090:9090
     networks:
       - metrics
 
