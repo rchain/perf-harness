@@ -154,7 +154,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(rspace_comm_consume_total[1m])",
+          "expr": "rate(rchain_rspace_comm_consume_total[1m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -163,7 +163,7 @@
           "refId": "A"
         },
         {
-          "expr": "rate(rspace_comm_produce_total[1m])",
+          "expr": "rate(rchain_rspace_comm_produce_total[1m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -172,7 +172,7 @@
           "refId": "B"
         },
         {
-          "expr": "sum(rate(rspace_comm_produce_total[10s]))",
+          "expr": "sum(rate(rchain_rspace_comm_produce_total[10s]))",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "comm rate",
@@ -347,14 +347,14 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(replayrspace_comm_consume_total[1m])",
+          "expr": "rate(rchain_rspace_replay_comm_consume_total[1m])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Consume COMM@{{exported_instance}}@{{exported_job}}",
           "refId": "A"
         },
         {
-          "expr": "rate(replayrspace_comm_produce_total[1m])",
+          "expr": "rate(rchain_rspace_replay_comm_produce_total[1m])",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Produce COMM@{{exported_instance}}@{{exported_job}}",
