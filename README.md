@@ -49,7 +49,7 @@
        DRONE_BUILD_REPO
 
    _GitHub path_ of this repository, i.e. most probably
-   `rchain/rchain-perf-harness` unless this is a fork.
+   `rchain/perf-harness` unless this is a fork.
 
        HUBOT_DISCORD_TOKEN
 

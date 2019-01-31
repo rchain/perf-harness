@@ -1,6 +1,6 @@
 #!/bin/bash
 
-: ${DRONE_BUILD_REPO:=rchain/rchain-perf-harness}
+: ${DRONE_BUILD_REPO:=rchain/perf-harness}
 
 usage() {
 	echo "Usage $0 dockerimg|gitrev args" >&2
