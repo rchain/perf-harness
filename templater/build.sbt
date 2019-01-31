@@ -26,16 +26,6 @@ val grpcNetty           = "io.grpc"                     % "grpc-netty"          
 
 lazy val commonSettings = projectSettings
 
-lazy val templater = (project in file("templater"))
-  .settings(commonSettings: _*)
-  .settings(
-    libraryDependencies ++= Seq(
-      "org.clapper" %% "scalasti" % "3.0.1",
-      "org.rogach" %% "scallop" % "3.1.3"
-    ),
-    mainClass := Some("coop.rchain.templater.Templater")
-  )
-
 lazy val repoHashRef = sys.env.get("RCHAIN_REPO_HASH").filter(_ != "").getOrElse("dev")
 
 lazy val models = sbt.ProjectRef(uri(s"git://github.com/rchain/rchain.git#$repoHashRef"), "models")
