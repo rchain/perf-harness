@@ -1,0 +1,6 @@
+digraph {
+    curl -> node_;
+    curl -> push_gateway;
+    prometheus_server -> push_gateway;
+    grafana -> prometheus_server;
+}

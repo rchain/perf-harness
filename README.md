@@ -1,4 +1,7 @@
 # Performance Harness
+
+<img src="doc/topology.png"/>
+
 ## Installation
 
 1. Clone the repository on your server and `cd` into it.
