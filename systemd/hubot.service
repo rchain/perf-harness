@@ -5,6 +5,6 @@ StopWhenUnneeded=true
 [Service]
 ExecStart=/usr/bin/docker run --rm --name rchain-hubot --env-file=/etc/rchain-perf-harness/hubot.env rchain/rchain-hubot
 ExecStop=/usr/bin/docker rm -f rchain-hubot
-Restart=on-failure
+Restart=always
 [Install]
 WantedBy=rchain-perf-harness.target
