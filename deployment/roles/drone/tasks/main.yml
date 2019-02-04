@@ -1,0 +1,76 @@
+---
+
+- name: Create {{ drone_user }} user
+  become: yes
+  user:
+    name: "{{ drone_user }}"
+    groups: docker,lxd
+
+- name: Create {{ staging_dir }}
+  become: yes
+  file:
+    path: "{{ staging_dir }}"
+    state: directory
+    group: "{{ deployers_group }}"
+    mode: u=rwx,g=rwx,o=r
+    recurse: yes
+
+- name: Checkout runtime files
+  become_user: "{{ drone_user }}"
+  git:
+    repo: 'https://github.com/rchain/perf-harness/'
+    clone: yes
+    update: yes
+    force: yes
+    dest: "{{ staging_dir }}"
+    version: "{{ perf_harness_commit }}"
+
+- name: Render drone.env
+  become_user: "{{ drone_user }}"
+  template:
+    src: drone.env.j2
+    dest: "{{ staging_dir }}/drone.env"
+
+- name: Render drone.service
+  become_user: "{{ drone_user }}"
+  template:
+    src: drone.service.j2
+    dest: "{{ staging_dir }}/drone.service"
+
+- name: Fix attibutes
+  become: yes
+  file:
+    path: "{{ staging_dir }}"
+    owner: "{{ drone_user }}"
+    recurse: yes
+
+- name: Symlink drone.service file
+  become: yes
+  file:
+    src: "{{ staging_dir }}/drone.service"
+    dest: /etc/systemd/system/drone.service
+    state: link
+
+- name: Symlink rchain-perf-harness.target file
+  become: yes
+  file:
+    src: "{{ staging_dir }}/systemd/rchain-perf-harness.target"
+    dest: /etc/systemd/system/rchain-perf-harness.target
+    state: link
+
+- name: Register systemd unit
+  become: yes
+  systemd:
+    daemon_reload: true
+
+- name: Run systemd unit at boot
+  become: yes
+  systemd:
+    name: drone
+    enabled: yes
+
+- name: Restart systemd service
+  become: yes
+  systemd:
+    name: drone
+    state: restarted
