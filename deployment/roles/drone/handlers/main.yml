@@ -1,0 +1,6 @@
+---
+
+- name: restart drone
+  systemd:
+    name: drone
+    state: restarted
