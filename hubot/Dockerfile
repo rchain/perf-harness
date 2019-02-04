@@ -10,4 +10,4 @@ USER root
 COPY rchainperfharness /usr/local/bin/
 USER hubot
 COPY scripts /hubot/scripts
-CMD hubot -a discord
+ENTRYPOINT ["hubot", "-a", "discord"]
