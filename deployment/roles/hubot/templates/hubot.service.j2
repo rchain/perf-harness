@@ -1,0 +1,10 @@
+[Unit]
+Requires=docker.service drone.service
+After=docker.service drone.service
+StopWhenUnneeded=true
+[Service]
+ExecStart=/usr/bin/docker run --rm --name rchain-hubot --env-file="{{ hubot_checkout_dir }}/hubot.env" rchain/rchain-hubot
+ExecStop=/usr/bin/docker rm --force rchain-hubot
+Restart=always
+[Install]
+WantedBy=rchain-perf-harness.target
