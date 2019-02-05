@@ -1,16 +1,16 @@
 ---
 
-- name: Create {{ drone_user }} user
+- name: Create {{ hubot_user }} user
   become: yes
   user:
-    name: "{{ drone_user }}"
+    name: "{{ hubot_user }}"
     create_home: no
-    groups: docker,lxd
+    groups: docker, lxd
 
-- name: Create {{ drone_checkout_dir }}
+- name: Create {{ hubot_checkout_dir }}
   become: yes
   file:
-    path: "{{ drone_checkout_dir }}"
+    path: "{{ hubot_checkout_dir }}"
     state: directory
     group: "{{ deployers_group }}"
     mode: u=rwx,g=rwx,o=r
@@ -21,37 +21,37 @@
     clone: yes
     update: yes
     force: yes
-    dest: "{{ drone_checkout_dir }}"
-    version: "{{ drone_checkout_commit }}"
+    dest: "{{ hubot_checkout_dir }}"
+    version: "{{ hubot_checkout_commit }}"
 
-- name: Render drone.env
+- name: Render hubot.env
   template:
-    src: drone.env.j2
-    dest: "{{ drone_checkout_dir }}/drone.env"
+    src: hubot.env.j2
+    dest: "{{ hubot_checkout_dir }}/hubot.env"
 
-- name: Render drone.service
+- name: Render hubot.service
   template:
-    src: drone.service.j2
-    dest: "{{ drone_checkout_dir }}/drone.service"
+    src: hubot.service.j2
+    dest: "{{ hubot_checkout_dir }}/hubot.service"
 
 - name: Fix attibutes
   become: yes
   file:
-    path: "{{ drone_checkout_dir }}"
-    owner: "{{ drone_user }}"
+    path: "{{ hubot_checkout_dir }}"
+    owner: "{{ hubot_user }}"
     recurse: yes
 
-- name: Symlink drone.service file
+- name: Symlink hubot.service file
   become: yes
   file:
-    src: "{{ drone_checkout_dir }}/drone.service"
-    dest: /etc/systemd/system/drone.service
+    src: "{{ hubot_checkout_dir }}/hubot.service"
+    dest: /etc/systemd/system/hubot.service
     state: link
 
 - name: Symlink rchain-perf-harness.target file
   become: yes
   file:
-    src: "{{ drone_checkout_dir }}/systemd/rchain-perf-harness.target"
+    src: "{{ hubot_checkout_dir }}/systemd/rchain-perf-harness.target"
     dest: /etc/systemd/system/rchain-perf-harness.target
     state: link
 
@@ -63,11 +63,11 @@
 - name: Run systemd unit at boot
   become: yes
   systemd:
-    name: drone
+    name: hubot
     enabled: yes
 
 - name: Restart systemd service
   become: yes
   systemd:
-    name: drone
+    name: hubot
     state: restarted

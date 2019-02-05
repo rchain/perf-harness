@@ -1,11 +1,1 @@
-drone_host: https://drone.perf.rchain-dev.tk
-drone_github_client: 
-drone_github_secret: 
-drone_secret: 
-drone_orgs: 
-drone_admin: 
-
-perf_harness_commit: master
-drone_user: drone
 deployers_group: google-sudoers
-staging_dir: /opt/perf-harness
