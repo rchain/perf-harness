@@ -8,7 +8,6 @@
     groups: docker,lxd
 
 - name: Create {{ drone_checkout_dir }}
-  become: yes
   file:
     path: "{{ drone_checkout_dir }}"
     state: directory

@@ -1,0 +1,74 @@
+---
+
+- name: Create {{ metrics_user }} user
+  become: yes
+  user:
+    name: "{{ metrics_user }}"
+    create_home: no
+    groups: docker, lxd
+
+- name: Create {{ metrics_checkout_dir }}
+  become: yes
+  file:
+    path: "{{ metrics_checkout_dir }}"
+    state: directory
+    group: "{{ deployers_group }}"
+    mode: u=rwx,g=rwx,o=r
+
+- name: Checkout runtime files
+  git:
+    repo: 'https://github.com/rchain/perf-harness/'
+    clone: yes
+    update: yes
+    force: yes
+    dest: "{{ metrics_checkout_dir }}"
+    version: "{{ metrics_checkout_commit }}"
+
+- name: Render metrics.service
+  template:
+    src: metrics.service.j2
+    dest: "{{ metrics_checkout_dir }}/metrics.service"
+
+- name: Fix attibutes
+  become: yes
+  file:
+    path: "{{ metrics_checkout_dir }}"
+    owner: "{{ metrics_user }}"
+    recurse: yes
+
+- name: Symlink metrics.service file
+  become: yes
+  file:
+    src: "{{ metrics_checkout_dir }}/metrics.service"
+    dest: /etc/systemd/system/metrics.service
+    state: link
+
+- name: Symlink rchain-perf-harness.target file
+  become: yes
+  file:
+    src: "{{ metrics_checkout_dir }}/systemd/rchain-perf-harness.target"
+    dest: /etc/systemd/system/rchain-perf-harness.target
+    state: link
+
+- name: Configure nginx
+  become: yes
+  template:
+    src: perf
+    dest: /etc/nginx/sites-enabled/perf
+
+- name: Register systemd unit
+  become: yes
+  systemd:
+    daemon_reload: true
+
+- name: Run systemd unit at boot
+  become: yes
+  systemd:
+    name: metrics
+    enabled: yes
+
+- name: Restart systemd service
+  become: yes
+  systemd:
+    name: metrics
+    state: restarted

@@ -1,0 +1,3 @@
+metrics_checkout_dir: /opt/perf-harness-metrics-metrics
+metrics_checkout_commit: master
+metrics_user: metrics

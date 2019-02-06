@@ -4,3 +4,4 @@
   roles:
     - drone
     - hubot
+    - metrics
