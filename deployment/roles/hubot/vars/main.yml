@@ -5,4 +5,4 @@ hubot_discord_token:
 
 hubot_user: hubot
 hubot_checkout_dir: /opt/perf-harness-hubot
-hubot_checkout_commit: master
+hubot_checkout_commit: "{{ checkout_commit | default('master') }}"
