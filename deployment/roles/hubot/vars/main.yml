@@ -1,7 +1,7 @@
-hubot_drone_server: 
-hubot_drone_token: 
-hubot_drone_build_repo: 
-hubot_discord_token: 
+# hubot_drone_server: 
+# hubot_drone_token: 
+# hubot_drone_build_repo: 
+# hubot_discord_token: 
 
 hubot_user: hubot
 hubot_checkout_dir: /opt/perf-harness-hubot
