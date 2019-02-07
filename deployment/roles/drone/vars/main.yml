@@ -1,10 +1,10 @@
-drone_github_client: 
-drone_github_secret: 
-drone_secret: 
-drone_orgs: 
-drone_admin: 
-drone_host: 
+# drone_github_client: 
+# drone_github_secret: 
+# drone_secret: 
+# drone_orgs: 
+# drone_admin: 
+# drone_host: 
 
 drone_checkout_dir: /opt/perf-harness-drone
-drone_checkout_commit: master
+drone_checkout_commit: "{{ checkout_commit | default('master') }}"
 drone_user: drone
