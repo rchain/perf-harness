@@ -17,7 +17,7 @@ services:
       - DRONE_GITHUB_CLIENT=${DRONE_GITHUB_CLIENT}
       - DRONE_GITHUB_SECRET=${DRONE_GITHUB_SECRET}
       - DRONE_SECRET=${DRONE_SECRET}
-      - DRONE_NETWORK=rchainperfharness_metrics
+      - DRONE_NETWORK=perfharnessmetricsmetrics_metrics
 
   drone-agent-1:
     image: drone/agent:0.8
@@ -34,4 +34,4 @@ services:
 networks:
   default:
     external:
-      name: rchainperfharness_metrics
+      name: perfharnessmetricsmetrics_metrics
