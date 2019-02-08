@@ -1,11 +1,5 @@
 ---
 
-- name: restart drone
-  systemd:
-    name: drone
-    state: restarted
-
-
 - name: reload nginx
   become: yes
   systemd:
