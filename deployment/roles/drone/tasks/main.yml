@@ -54,6 +54,14 @@
     dest: /etc/systemd/system/rchain-perf-harness.target
     state: link
 
+- name: Configure nginx
+  become: yes
+  template:
+    src: drone.nginx.conf.j2
+    dest: /etc/nginx/sites-enabled/drone.conf
+  notify:
+    - reload nginx
+
 - name: Register systemd unit
   become: yes
   systemd:

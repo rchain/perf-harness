@@ -4,6 +4,7 @@
 # drone_orgs: 
 # drone_admin: 
 # drone_host: 
+# drone_nginx_server_name: 
 
 drone_checkout_dir: /opt/perf-harness-drone
 drone_checkout_commit: "{{ checkout_commit | default('master') }}"

@@ -53,8 +53,10 @@
 - name: Configure nginx
   become: yes
   template:
-    src: perf
-    dest: /etc/nginx/sites-enabled/perf
+    src: grafana.nginx.conf.j2
+    dest: /etc/nginx/sites-enabled/grafana.conf
+  notify:
+    - reload nginx
 
 - name: Register systemd unit
   become: yes
