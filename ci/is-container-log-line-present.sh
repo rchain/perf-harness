@@ -9,7 +9,7 @@ main () {
     local container_name_substring=$1; shift
     local log_message=$1; shift
 
-    local container_hash=$(docker ps --filter "name=$container_name_substring" --quiet)
+    local container_hash=$(docker ps --filter "name=$container_name_substring" --quiet | head -1)
 
     if [[ -z $container_hash ]]; then
         echo "$container_name_substring: container not found"

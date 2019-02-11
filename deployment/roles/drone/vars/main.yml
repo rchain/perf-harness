@@ -1,9 +1,31 @@
+# Set this to values of an GitHub OAuth application created at
+# https://github.com/organizations/rchain/settings/applications
+#
 # drone_github_client: 
 # drone_github_secret: 
+
+# Set this to a random string. It's used to authenticate Drone agent with
+# server.
+#
 # drone_secret: 
+
+# Set this to comma separated list of GitHub organizations whose users can use
+# this Drone instance.
+#
 # drone_orgs: 
+
+# Set this to comma separated list of GitHub users who can manage this Drone
+# instance.
+#
 # drone_admin: 
+
+# Set this to HTTP(S) URL that'll point to this Drone instance from outside.
+# Includes the HTTP prefix, e.g. "https://drone.rchain.coop"
+#
 # drone_host: 
+
+# Full DNS name, e.g. "drone.rchain.coop".  Used in nginx configuration files.
+#
 # drone_nginx_server_name: 
 
 drone_checkout_dir: /opt/perf-harness-drone
