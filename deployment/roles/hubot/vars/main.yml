@@ -1,6 +1,22 @@
+# Get these values from `${DRONE_HOST}/account/token` page.
+#
 # hubot_drone_server: 
 # hubot_drone_token: 
+
+# GitHub path of this repository, e.g. "rchain/perf-harness"
+#
 # hubot_drone_build_repo: 
+
+# Set this to token of a Discord bot you should create at
+# https://discordapp.com/developers/applications/.  The token is located under
+# the 'Bots' tab.
+#
+# Also, you will want to add the Discord bot to your server by following the
+# link:
+# `https://discordapp.com/api/oauth2/authorize?client_id=<CLIENT_ID>&scope=bot&permissions=1`
+# where the `<CLIENT_ID>` is copied over from
+# `https://discordapp.com/developers/applications/` .
+#
 # hubot_discord_token: 
 
 hubot_user: hubot

@@ -1,3 +1,5 @@
+# Full DNS name of the Grafana instance, e.g. "grafana.perf.rchain-dev.tk"
+#
 # grafana_nginx_server_name: 
 
 metrics_checkout_dir: /opt/perf-harness-metrics-metrics
