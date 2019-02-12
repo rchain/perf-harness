@@ -43,3 +43,11 @@ services:
     volumes:
       - grafana_data_storage:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
+
+  influxdb:
+    image: influxdb:1.7.3
+    networks:
+      - metrics
+    volumes:
+      - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
+      - /var/lib/influxdb:/var/lib/influxdb
