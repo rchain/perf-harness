@@ -6,9 +6,9 @@
 
 1. Fill out Ansible playbook variables in:
 
- * `deployment/roles/drone/vars/main.yml`
- * `deployment/roles/hubot/vars/main.yml`
- * `deployment/roles/metrics/vars/main.yml`
+ * [`deployment/roles/drone/vars/main.yml`](deployment/roles/drone/vars/main.yml)
+ * [`deployment/roles/hubot/vars/main.yml`](deployment/roles/hubot/vars/main.yml)
+ * [`deployment/roles/metrics/vars/main.yml`](deployment/roles/metrics/vars/main.yml)
 
 2. Execute the Ansible playbook:
 
