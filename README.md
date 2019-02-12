@@ -17,6 +17,9 @@ $ cd deployment
 $ ansible-playbook --inventory=<HOST>, --user=<USER> --private-key=<SSH_PRIVATE_KEY_PATH> site.yml
 ```
 
+Side note: You may also want to pass `--extra-vars "checkout_commit=<BRANCH>"`
+to test out a PR against the Ansible playbook itself.
+
 3. In the cloud provider UI, configure DNS records for Drone and Grafana
 
     1. Assign a static IP address to the perf machine
