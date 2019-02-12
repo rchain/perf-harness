@@ -9,6 +9,14 @@ deleteDatasources:
 # list of datasources to insert/update depending
 # whats available in the database
 datasources:
+- name: InfluxDB
+  type: influxdb
+  access: proxy
+  database: rnode
+  url: http://influxdb:8086
+  isDefault: false
+  editable: true
+
   # <string, required> name of the datasource. Required
 - name: Prometheus
   # <string, required> datasource type. Required
