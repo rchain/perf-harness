@@ -41,7 +41,7 @@ services:
     env_file:
       - ./grafana/grafana.conf
     volumes:
-      - grafana_data_storage:/var/lib/grafana
+      - /var/lib/grafana:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
 
   influxdb:
