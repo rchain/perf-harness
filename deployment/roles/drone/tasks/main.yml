@@ -67,6 +67,11 @@
   systemd:
     daemon_reload: true
 
+- name: Create docker network
+  docker_network:
+    name: perf_harness
+    driver: bridge
+
 - name: Run systemd unit at boot
   become: yes
   systemd:
