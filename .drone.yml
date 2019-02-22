@@ -81,7 +81,7 @@ pipeline:
     image: rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     detach: true
     environment:
-      - JAVA_OPTS=-Dkamon.metric.tick-interval=30s
+      - JAVA_OPTS=-Dkamon.metric.tick-interval=500ms
     commands:
       - /opt/docker/bin/rnode -c ./drone/config/bootstrap.conf run
 
@@ -96,7 +96,7 @@ pipeline:
     image: rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     detach: true
     environment:
-      - JAVA_OPTS=-Dkamon.metric.tick-interval=30s
+      - JAVA_OPTS=-Dkamon.metric.tick-interval=500ms
     commands:
       - /opt/docker/bin/rnode -c ./drone/config/validator1.conf run
 
@@ -104,7 +104,7 @@ pipeline:
     image: rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     detach: true
     environment:
-      - JAVA_OPTS=-Dkamon.metric.tick-interval=30s
+      - JAVA_OPTS=-Dkamon.metric.tick-interval=500ms
     commands:
       - /opt/docker/bin/rnode -c ./drone/config/validator2.conf run
 
@@ -112,7 +112,7 @@ pipeline:
     image: rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     detach: true
     environment:
-      - JAVA_OPTS=-Dkamon.metric.tick-interval=30s
+      - JAVA_OPTS=-Dkamon.metric.tick-interval=500ms
     commands:
       - /opt/docker/bin/rnode -c ./drone/config/validator3.conf run
 
@@ -120,7 +120,7 @@ pipeline:
     image: rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     detach: true
     environment:
-      - JAVA_OPTS=-Dkamon.metric.tick-interval=30s
+      - JAVA_OPTS=-Dkamon.metric.tick-interval=500ms
     commands:
       - /opt/docker/bin/rnode -c ./drone/config/validator4.conf run
 
