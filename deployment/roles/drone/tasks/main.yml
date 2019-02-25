@@ -78,6 +78,10 @@
     name: drone
     enabled: yes
 
+- name: Kill running jobs
+  become: yes
+  shell: docker ps --filter='name=_step_' --quiet | xargs --no-run-if-empty docker kill
+
 - name: Restart systemd service
   become: yes
   systemd:
