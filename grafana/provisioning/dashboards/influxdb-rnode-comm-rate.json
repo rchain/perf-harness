@@ -55,7 +55,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "consume-rate",
+          "alias": "consume-rate@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -93,7 +93,7 @@
           "tags": []
         },
         {
-          "alias": "produce-rate",
+          "alias": "produce-rate@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -131,7 +131,7 @@
           "tags": []
         },
         {
-          "alias": "install-rate",
+          "alias": "install-rate@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -246,7 +246,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "consume-rate",
+          "alias": "consume-rate@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -263,7 +263,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"rchain.rspace.comm.consume\" WHERE $timeFilter GROUP BY time(1m)",
+          "query": "SELECT sum(\"count\") FROM \"rchain.rspace.comm.consume\" WHERE $timeFilter GROUP BY time(1m), host",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -284,7 +284,7 @@
           "tags": []
         },
         {
-          "alias": "produce-rate",
+          "alias": "produce-rate@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -301,7 +301,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"rchain.rspace.comm.produce\" WHERE $timeFilter GROUP BY time(1m)",
+          "query": "SELECT sum(\"count\") FROM \"rchain.rspace.comm.produce\" WHERE $timeFilter GROUP BY time(1m), host",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -399,7 +399,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "replay-consume-rate",
+          "alias": "replay-consume-rate@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -416,7 +416,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE operation = 'rchain.rspace.replay.consume' AND $timeFilter GROUP BY time(1m)",
+          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE operation = 'rchain.rspace.replay.consume' AND $timeFilter GROUP BY time(1m), host",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -437,7 +437,7 @@
           "tags": []
         },
         {
-          "alias": "replay-produce-rate",
+          "alias": "replay-produce-rate@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -454,7 +454,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE operation = 'rchain.rspace.replay.produce' AND $timeFilter GROUP BY time(1m)",
+          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE operation = 'rchain.rspace.replay.produce' AND $timeFilter GROUP BY time(1m), host",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -552,7 +552,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "replay-consume-rate",
+          "alias": "replay-consume-rate@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -569,7 +569,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"rchain.rspace.replay.comm.consume\" WHERE $timeFilter GROUP BY time(1m)",
+          "query": "SELECT sum(\"count\") FROM \"rchain.rspace.replay.comm.consume\" WHERE $timeFilter GROUP BY time(1m), host",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -590,7 +590,7 @@
           "tags": []
         },
         {
-          "alias": "replay-produce-rate",
+          "alias": "replay-produce-rate@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -607,7 +607,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"rchain.rspace.replay.comm.produce\" WHERE $timeFilter GROUP BY time(1m)",
+          "query": "SELECT sum(\"count\") FROM \"rchain.rspace.replay.comm.produce\" WHERE $timeFilter GROUP BY time(1m), host",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
