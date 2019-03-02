@@ -7,6 +7,7 @@ import coop.rchain.casper.protocol.DeployServiceGrpc.{
   DeployServiceStub
 }
 import coop.rchain.casper.protocol._
+import coop.rchain.models.either.EitherHelper
 import coop.rchain.models.{EVar, Expr, Par}
 import io.gatling.commons.util.RoundRobin
 import io.gatling.commons.stats.{KO, OK}
@@ -26,6 +27,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
+import coop.rchain.models.either.implicits._
+
 object Runner {}
 
 import io.gatling.core.Predef._
@@ -42,7 +45,8 @@ object Propose {
       println(
         s"finished propose of $cn on client ${client.full} session ${session.userId}, took: ${System
           .currentTimeMillis() - x1}")
-      (session, res)
+      val either = res.toEither[DeployServiceResponse]
+      (session, either.right.get)
     }
   }
 }
@@ -67,7 +71,8 @@ object Deploy {
       println(
         s"finished deploy of $cn on client ${client.full} session ${session.userId}, took: ${System
           .currentTimeMillis() - x1}")
-      (session.set("client", client), res)
+      val either = res.toEither[DeployServiceResponse]
+      (session.set("client", client), either.right.get)
     }
   }
 }
@@ -88,18 +93,21 @@ object GetDataFromBlock {
     val parData =
       client.client.listenForDataAtName(DataAtNameQuery(0, Some(par)))
 
-    parData.map { res =>
-      res.status match {
-        case "Success" =>
+    parData.map { either =>
+      val res: Either[Seq[String], DeployServiceResponse] =
+        either.toEither[DeployServiceResponse]
+
+      res match {
+        case Right(v) =>
           println(
-            s"got binary data ${res.length} of $cn on client ${client.full} session ${session.userId}, took: ${System
+            s"got binary data ${v.message.length} of $cn on client ${client.full} session ${session.userId}, took: ${System
               .currentTimeMillis() - x1}")
           (session.set("client", client),
-           DeployServiceResponse(true, "Successfully retrieved binary data"))
+           DeployServiceResponse("Successfully retrieved binary data"))
         case _ =>
           println(s"$res")
           (session.set("client", client),
-           DeployServiceResponse(false, "Failed to get binary data"))
+           DeployServiceResponse("Failed to get binary data"))
       }
     }
   }
@@ -160,13 +168,13 @@ class RNodeRequestAction(val actionName: String,
                                  exception.getMessage,
                                  KO,
                                  requestName(contractName, client.host))
-            case Success((ns, DeployServiceResponse(false, msg))) =>
+            case Success((ns, DeployServiceResponse(msg))) =>
               next ! logResponse(timings,
                                  ns.markAsFailed,
                                  msg,
                                  KO,
                                  requestName(contractName, client.host))
-            case Success((ns, DeployServiceResponse(true, msg))) =>
+            case Success((ns, DeployServiceResponse(msg))) =>
               next ! logResponse(timings,
                                  ns.markAsSucceeded,
                                  msg,
