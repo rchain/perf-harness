@@ -6,6 +6,7 @@ import com.typesafe.config.ConfigFactory
 import io.gatling.core.Predef.{Simulation, atOnceUsers, scenario}
 import io.gatling.core.Predef._
 
+import scala.language.postfixOps
 import scala.concurrent.duration._
 import scala.io.Source
 
