@@ -23,11 +23,15 @@ class DeployProposeSimulation extends Simulation {
   val conf = ConfigFactory.load()
   val rnodes = conf.getStringList("rnodes").asScala.toList
 
-  val contracts = sys.props.get("contract")
-    .map(path => Paths.get(path) match {
-      case p if Files.isDirectory(p) => ContinuousRunner.getAllRhosFromPath(p)
-      case p => List((p.getFileName.toString, Source.fromFile(p.toUri).mkString))
-    }).getOrElse(List(("sum-list", defaultTerm)))
+  val contracts = sys.props
+    .get("contract")
+    .map(path =>
+      Paths.get(path) match {
+        case p if Files.isDirectory(p) => ContinuousRunner.getAllRhosFromPath(p)
+        case p =>
+          List((p.getFileName.toString, Source.fromFile(p.toUri).mkString))
+    })
+    .getOrElse(List(("sum-list", defaultTerm)))
 
   println(s"will run simulation on ${rnodes.mkString(", ")}, contracts:")
   println("-------------------------------")
