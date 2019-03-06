@@ -267,7 +267,7 @@ object RNodeProtocol {
               case (host, port) =>
                 val channel = ManagedChannelBuilder
                   .forAddress(host, port)
-                  .usePlaintext(true)
+                  .usePlaintext()
                   .build
                 ClientWithDetails(DeployServiceGrpc.stub(channel), host, port)
             }

@@ -15,7 +15,12 @@ lazy val projectSettings = Seq(
     Resolver.sonatypeRepo("snapshots"),
     "jitpack" at "https://jitpack.io"
   ),
-  scalafmtOnCompile := true
+  scalafmtOnCompile := true,
+  scalacOptions ++= Seq(
+    "-feature",
+    "-deprecation",
+    "-Xfatal-warnings",
+  )
 )
 
 val config              = "com.typesafe"                % "config"                    % "1.3.1"
