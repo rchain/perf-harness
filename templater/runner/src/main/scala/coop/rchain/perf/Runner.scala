@@ -170,12 +170,6 @@ class RNodeRequestAction(val actionName: String,
                                  requestName(contractName, client.host))
             case Success((ns, DeployServiceResponse(msg))) =>
               next ! logResponse(timings,
-                                 ns.markAsFailed,
-                                 msg,
-                                 KO,
-                                 requestName(contractName, client.host))
-            case Success((ns, DeployServiceResponse(msg))) =>
-              next ! logResponse(timings,
                                  ns.markAsSucceeded,
                                  msg,
                                  OK,
