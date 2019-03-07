@@ -1,0 +1,5 @@
+---
+
+dependencies:
+  - role: drone
+  - role: hubot
