@@ -14,7 +14,7 @@
 
 ```
 $ cd deployment
-$ ansible-playbook --inventory=<HOST>, --user=<USER> --private-key=<SSH_PRIVATE_KEY_PATH> site.yml
+$ ansible-playbook --inventory=<HOST>, --user=<USER> --private-key=<SSH_PRIVATE_KEY_PATH> --ask-vault-pass site.yml
 ```
 
 Side note: You may also want to pass `--extra-vars "checkout_commit=<BRANCH>"`
