@@ -1,0 +1,15 @@
+---
+
+- name: Remove previous SSH user name Drone secret
+  shell: docker exec --interactive --tty rchain-hubot drone secret rm --repository {{ whiteblock_repository }} --name ssh_username
+  ignore_errors: yes
+
+- name: Add whiteblock SSH user name Drone secret
+  shell: docker exec --interactive --tty rchain-hubot drone secret add --repository {{ whiteblock_repository }} --name ssh_username --value {{ whiteblock_ssh_username }}
+
+- name: Remove previous SSH key Drone secret
+  shell: docker exec --interactive --tty rchain-hubot drone secret rm --repository {{ whiteblock_repository }} --name ssh_key
+  ignore_errors: yes
+
+- name: Add whiteblock SSH key Drone secret
+  shell: docker exec --interactive --tty rchain-hubot drone secret add --repository {{ whiteblock_repository }} --name ssh_key --value "{{ whiteblock_ssh_key }}"
