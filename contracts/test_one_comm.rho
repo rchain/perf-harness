@@ -1,4 +1,0 @@
-contract @"dupe"(@depth) = {
-  if (depth <= 0) { Nil } else { @"dupe"!(depth-1) }
-} |
-@"dupe"!(1)
