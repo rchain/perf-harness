@@ -53,10 +53,3 @@ A single persistent send parred with `n` linear listens on the same public chann
 
 ### `contract.rho`
 `n` linear sends parred with a single `contract` on the same public channel. Performance should be identical to `persistentListen.rho` because `contract` is just syntactic suger. But it's always best to test.
-
-
-
-Notes for PR:
-* I'm not clear when and whether it is useful to separate these phases.
-* test_one_comm.rho and test_ten_comms superceeded by my versions
-* It occurred to me late in the process that we could also test
