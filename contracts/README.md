@@ -1,7 +1,7 @@
 Performance Testing Contracts
 =============================
 
-The rholang contracts in this directory are used to test the performance of the RChain platform under various load profiles. The profile of each contract is described here briefly. It is useful to predict the expected number of comm events manually so that when performance results are surprising data can be compared with expectations in a meaningful.
+The rholang contracts in this directory are used to test the performance of the RChain platform under various load profiles. The profile of each contract is described here briefly. It is useful to predict the expected number of comm events manually so that when performance results are surprising data can be compared with expectations in a meaningful way.
 
 `dupe.rho`
 --------
@@ -52,4 +52,4 @@ They are all parametric in parameters
 A single persistent send parred with `n` linear listens on the same public channel.
 
 ### `contract.rho`
-`n` linear sends parred with a single `contract` on the same public channel. Performance should be identical to `persistentListen.rho` because `contract` is just syntactic suger. But it's always best to test.
+`n` linear sends parred with a single `contract` on the same public channel. Performance should be identical to `persistentListen.rho` because `contract` is just syntactic sugar. But it's always best to test.
