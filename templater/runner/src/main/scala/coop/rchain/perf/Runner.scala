@@ -1,12 +1,16 @@
 package coop.rchain.perf
 
 import akka.actor.ActorSystem
+import com.google.protobuf.ByteString
 import com.google.protobuf.empty.Empty
 import coop.rchain.casper.protocol.DeployServiceGrpc.{
   DeployServiceBlockingClient,
   DeployServiceStub
 }
 import coop.rchain.casper.protocol._
+import coop.rchain.crypto.PrivateKey
+import coop.rchain.crypto.codec.Base16
+import coop.rchain.crypto.signatures.Ed25519
 import coop.rchain.models.either.EitherHelper
 import coop.rchain.models.{EVar, Expr, Par}
 import io.gatling.commons.util.RoundRobin
@@ -52,6 +56,11 @@ object Propose {
 }
 
 object Deploy {
+  private val defaultSec = PrivateKey(
+    Base16.unsafeDecode(
+      "b18e1d0045995ec3d010c387ccfeb984d783af8fbb0f40fa7db126d889f6dadd")
+  )
+
   def deploy(session: Session)(
       client: ClientWithDetails): Future[(Session, DeployServiceResponse)] = {
     val (cn, contract): (String, String) = session("contract")
@@ -62,10 +71,9 @@ object Deploy {
     val d = DeployData()
       .withTimestamp(System.currentTimeMillis())
       .withTerm(contract)
-      .withFrom("0x1")
+      .withDeployer(ByteString.copyFrom(Ed25519.toPublic(defaultSec).bytes))
       .withPhloLimit(Integer.MAX_VALUE)
       .withPhloPrice(1)
-      .withNonce(0)
     val r = client.client.doDeploy(d)
     r.map { res =>
       println(
