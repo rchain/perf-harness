@@ -8,9 +8,10 @@ import coop.rchain.casper.protocol.DeployServiceGrpc.{
   DeployServiceStub
 }
 import coop.rchain.casper.protocol._
-import coop.rchain.crypto.PrivateKey
+import coop.rchain.crypto.{PrivateKey, PublicKey}
 import coop.rchain.crypto.codec.Base16
-import coop.rchain.crypto.signatures.Ed25519
+import coop.rchain.crypto.hash.Blake2b256
+import coop.rchain.crypto.signatures._
 import coop.rchain.models.either.EitherHelper
 import coop.rchain.models.{EVar, Expr, Par}
 import io.gatling.commons.util.RoundRobin
@@ -74,7 +75,7 @@ object Deploy {
       .withDeployer(ByteString.copyFrom(Ed25519.toPublic(defaultSec).bytes))
       .withPhloLimit(Integer.MAX_VALUE)
       .withPhloPrice(1)
-    val r = client.client.doDeploy(d)
+    val r = client.client.doDeploy(sign(defaultSec, d))
     r.map { res =>
       println(
         s"finished deploy of $cn on client ${client.full} session ${session.userId}, took: ${System
@@ -82,6 +83,27 @@ object Deploy {
       val either = res.toEither[DeployServiceResponse]
       (session.set("client", client), either.right.get)
     }
+  }
+
+  private def fill(
+      deployData: DeployData
+  )(deployer: PublicKey, sig: Array[Byte], sigAlgorithm: String): DeployData =
+    deployData
+      .withDeployer(ByteString.copyFrom(deployer.bytes))
+      .withSig(ByteString.copyFrom(sig))
+      .withSigAlgorithm(sigAlgorithm)
+
+  private def clear(deployData: DeployData): DeployData =
+    fill(deployData)(PublicKey(Array.empty[Byte]), Array.empty[Byte], "")
+
+  def sign(sec: PrivateKey,
+           deployData: DeployData,
+           alg: SignaturesAlg = Ed25519): DeployData = {
+    val toSign = clear(deployData).toByteString.toByteArray
+    val hash = Blake2b256.hash(toSign)
+    val signature = alg.sign(hash, sec)
+
+    fill(deployData)(alg.toPublic(sec), signature, alg.name)
   }
 }
 
