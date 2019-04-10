@@ -49,6 +49,7 @@ lazy val runner = (project in file("runner"))
 	"org.bouncycastle" % "bcprov-jdk15on" % "1.59",
 	"com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
 	"org.hdrhistogram" %  "HdrHistogram" % "2.1.11",
+    "com.fasterxml.jackson.core"%"jackson-databind" %"2.9.8",
     ),
   )
   .settings(
