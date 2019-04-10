@@ -33,6 +33,7 @@ lazy val commonSettings = projectSettings
 
 lazy val repoHashRef = sys.env.get("RCHAIN_REPO_HASH").filter(_ != "").getOrElse("dev")
 
+lazy val crypto = sbt.ProjectRef(uri(s"git://github.com/rchain/rchain.git#$repoHashRef"), "crypto")
 lazy val models = sbt.ProjectRef(uri(s"git://github.com/rchain/rchain.git#$repoHashRef"), "models")
 
 lazy val runner = (project in file("runner"))
@@ -63,4 +64,4 @@ lazy val runner = (project in file("runner"))
         oldStrategy(x)
     },
   ).enablePlugins(GatlingPlugin)
-  .dependsOn(models)
+  .dependsOn(models, crypto)
