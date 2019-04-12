@@ -39,6 +39,8 @@ main () {
     tar --create --verbose --directory="$backup_dir" --file="$tarball_basename" .
 
     gsutil cp "$tarball_basename" "gs://rchain-backups/perf-harness-influxdb/${tarball_basename}"
+
+    curl --header "Content-Type: application/json" --request POST --data '{"host": "perf-bootstrap", "service": "influxdb-database-backup", "status": "0", "output": ""}' http://nagios.c.developer-222401.internal:6315/submit_result
 }
 
 
