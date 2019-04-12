@@ -79,3 +79,16 @@
   systemd:
     name: metrics
     state: restarted
+
+- name: Install InfluxDB backup cron job
+  become: yes
+  copy:
+    src: backup-influxdb.bash
+    dest: /etc/cron.daily/
+    mode: u+x,g+x,o+x
+
+- name: Reload cron server to pick up new cronjob
+  become: yes
+  systemd:
+    name: cron
+    state: restarted

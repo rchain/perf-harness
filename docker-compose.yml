@@ -52,3 +52,4 @@ services:
     volumes:
       - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
       - /var/lib/influxdb:/var/lib/influxdb
+      - /tmp/influxdb:/tmp
