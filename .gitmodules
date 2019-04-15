@@ -1,4 +1,0 @@
-[submodule "deployment/roles/certbot"]
-	path = deployment/roles/certbot
-	url = https://github.com/rchain/ansible-role-certbot.git
-	branch = perf-harness
