@@ -38,7 +38,7 @@ services:
     networks:
       - metrics
     ports:
-      - 127.0.0.1:13000:3000
+      - 13000:3000
     env_file:
       - ./grafana/grafana.conf
     volumes:
