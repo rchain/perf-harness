@@ -2,7 +2,11 @@
 
 - hosts: all
   roles:
-    - drone
-    - hubot
-    - metrics
-    - whiteblock
+    - role: drone
+      tags: drone
+    - role: hubot
+      tags: hubot
+    - role: metrics
+      tags: metrics
+    - role: whiteblock
+      tags: whiteblock
