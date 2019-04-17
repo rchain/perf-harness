@@ -75,7 +75,7 @@
 - name: Install InfluxDB backup cron job
   become: yes
   copy:
-    src: backup-influxdb.bash
+    src: backup-influxdb
     dest: /etc/cron.daily/
     mode: u+x,g+x,o+x
 

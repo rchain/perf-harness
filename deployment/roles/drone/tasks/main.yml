@@ -83,8 +83,8 @@
 - name: Add a cron job that periodically cleans up Docker stuff
   become: yes
   copy:
-    src: cleanup-docker.sh
-    dest: /etc/cron.daily/cleanup-docker.sh
+    src: cleanup-docker
+    dest: /etc/cron.daily/
     mode: u+x,g+x,o+x
 
 - name: Restart cron
