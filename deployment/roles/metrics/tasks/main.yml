@@ -72,6 +72,12 @@
     name: metrics
     state: restarted
 
+- name: Install gsutil
+  become: yes
+  apt:
+    name: google-cloud-sdk
+    state: present
+
 - name: Install InfluxDB backup cron job
   become: yes
   copy:
