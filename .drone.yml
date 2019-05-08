@@ -87,7 +87,7 @@ pipeline:
   wait-for-bootstrap:
     image: rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     commands:
-      - until ci/is-container-log-line-present.sh _step_4 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
+      - until ci/is-container-log-line-present.sh _step_4 'Making a transition to ApprovedBlockReceivedHandler state.'; do echo $?; sleep 5; done
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -122,10 +122,10 @@ pipeline:
   wait-for-validators:
     image: rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     commands:
-      - until ci/is-container-log-line-present.sh _step_6 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
-      - until ci/is-container-log-line-present.sh _step_7 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
-      - until ci/is-container-log-line-present.sh _step_8 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
-      - until ci/is-container-log-line-present.sh _step_9 'Making a transition to ApprovedBlockRecievedHandler state.'; do echo $?; sleep 5; done
+      - until ci/is-container-log-line-present.sh _step_6 'Making a transition to ApprovedBlockReceivedHandler state.'; do echo $?; sleep 5; done
+      - until ci/is-container-log-line-present.sh _step_7 'Making a transition to ApprovedBlockReceivedHandler state.'; do echo $?; sleep 5; done
+      - until ci/is-container-log-line-present.sh _step_8 'Making a transition to ApprovedBlockReceivedHandler state.'; do echo $?; sleep 5; done
+      - until ci/is-container-log-line-present.sh _step_9 'Making a transition to ApprovedBlockReceivedHandler state.'; do echo $?; sleep 5; done
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
