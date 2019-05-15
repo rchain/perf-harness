@@ -22,11 +22,6 @@ clone:
       - git checkout dev
 
 pipeline:
-#  debug:
-#    image: alpine
-#    commands:
-#      - ls /workdir
-
   restore-cache:
     image: drillster/drone-volume-cache
     restore: true
