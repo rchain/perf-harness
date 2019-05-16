@@ -34,7 +34,7 @@ This image can be then transported with `docker save` and `docker load` commands
 
 
 ### Metrics
-#### prometheus & grafana
+#### InfluxDB & Grafana
 
 Configuration for [docker-compose](docker-compose.yml)
 The usual `docker-compose up` should suffice to get monitoring.
