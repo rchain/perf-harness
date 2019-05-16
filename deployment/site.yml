@@ -1,12 +1,5 @@
 ---
-
-- hosts: all
-  roles:
-    - role: drone
-      tags: drone
-    - role: hubot
-      tags: hubot
-    - role: metrics
-      tags: metrics
-    - role: whiteblock
-      tags: whiteblock
+- import_playbook: drone.yml
+- import_playbook: hubot.yml
+- import_playbook: metrics.yml
+- import_playbook: whiteblock.yml
