@@ -31,7 +31,7 @@ pipeline:
       - git checkout $RCHAIN_COMMIT_HASH
       - sbt -Dsbt.ivy.home=/workdir/.ivy2 ";rholang/bnfc:generate; compile; node/docker:publishLocal"
       - cd -
-      - ci/patch-image-with-docker-package.sh coop.rchain/rnode:DRONE-${DRONE_BUILD_NUMBER} rchain/rnode:for_drone_${DRONE_BUILD_NUMBER} docker-ce
+      - ci/patch-image-with-docker-package.sh coop.rchain/rnode:DRONE-${DRONE_BUILD_NUMBER} rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     when:
@@ -44,7 +44,7 @@ pipeline:
       - echo $CONTRACT
       - echo $RNODE_IMAGE_VERSION
       - docker pull rchain/rnode:dev
-      - ci/patch-image-with-docker-package.sh rchain/rnode:dev rchain/rnode:for_drone_${DRONE_BUILD_NUMBER} docker.io
+      - ci/patch-image-with-docker-package.sh rchain/rnode:dev rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     when:
@@ -56,7 +56,7 @@ pipeline:
       - echo $CONTRACT
       - echo $RNODE_IMAGE_VERSION
       - docker pull rchain/rnode:$RNODE_IMAGE_VERSION
-      - ci/patch-image-with-docker-package.sh rchain/rnode:$RNODE_IMAGE_VERSION rchain/rnode:for_drone_${DRONE_BUILD_NUMBER} docker.io
+      - ci/patch-image-with-docker-package.sh rchain/rnode:$RNODE_IMAGE_VERSION rchain/rnode:for_drone_${DRONE_BUILD_NUMBER}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     when:
