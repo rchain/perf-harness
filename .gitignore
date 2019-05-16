@@ -38,3 +38,5 @@ integration-testing.log
 *.log
 
 deployment/site.retry
+deployment/.terraform
+deployment/account.json
