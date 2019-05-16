@@ -51,5 +51,4 @@ drone_host: !vault |
           3466363161643737313038383263633565626234373566313039
 
 drone_checkout_dir: /opt/perf-harness-drone
-drone_checkout_commit: "{{ checkout_commit | default('master') }}"
 drone_user: drone

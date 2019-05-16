@@ -1,9 +1,7 @@
 version: '3.1'
 
 volumes:
-    prometheus_data_storage: {}
     grafana_data_storage: {}
-    rnode_data_storage: {}
 
 networks:
   metrics:
@@ -11,28 +9,6 @@ networks:
       name: perf_harness
 
 services:
-  prometheus-pushgateway:
-    image: prom/pushgateway
-    ports:
-      - 127.0.0.1:19091:9091
-    networks:
-      - metrics
-
-  prometheus-server:
-    image: prom/prometheus:v2.3.2
-    ports:
-      - 127.0.0.1:19090:9090
-    networks:
-      - metrics
-    volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - prometheus_data_storage:/prometheus
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-      - '--web.console.templates=/usr/share/prometheus/consoles'
-
   grafana-ui:
     image: grafana/grafana:5.2.1
     networks:
