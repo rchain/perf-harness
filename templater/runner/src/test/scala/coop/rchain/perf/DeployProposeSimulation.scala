@@ -4,7 +4,7 @@ import java.nio.file.{Files, Paths}
 
 import collection.JavaConverters._
 import com.typesafe.config.ConfigFactory
-import io.gatling.core.Predef.{Simulation, atOnceUsers, scenario}
+import io.gatling.core.Predef.{atOnceUsers, scenario, Simulation}
 import io.gatling.core.Predef._
 
 import scala.language.postfixOps
@@ -21,17 +21,19 @@ class DeployProposeSimulation extends Simulation {
       |@"dupe"!(5)
     """.stripMargin
 
-  val conf = ConfigFactory.load()
+  val conf   = ConfigFactory.load()
   val rnodes = conf.getStringList("rnodes").asScala.toList
 
   val contracts = sys.props
     .get("contract")
-    .map(path =>
-      Paths.get(path) match {
-        case p if Files.isDirectory(p) => ContinuousRunner.getAllRhosFromPath(p)
-        case p =>
-          List((p.getFileName.toString, Source.fromFile(p.toUri).mkString))
-    })
+    .map(
+      path =>
+        Paths.get(path) match {
+          case p if Files.isDirectory(p) => ContinuousRunner.getAllRhosFromPath(p)
+          case p =>
+            List((p.getFileName.toString, Source.fromFile(p.toUri).mkString))
+        }
+    )
     .getOrElse(List(("sum-list", defaultTerm)))
 
   println(s"will run simulation on ${rnodes.mkString(", ")}, contracts:")
