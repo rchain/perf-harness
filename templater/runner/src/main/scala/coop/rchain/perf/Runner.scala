@@ -52,7 +52,12 @@ object Propose {
           .currentTimeMillis() - x1}"
       )
       val either = res.toEither[DeployServiceResponse]
-      (session, either.right.get)
+      either match {
+        case Right(response) =>
+          (session, response)
+        case Left(errors) =>
+          throw new RuntimeException(s"Propose failed because: ${errors.mkString}")
+      }
     }
   }
 }
@@ -82,7 +87,11 @@ object Deploy {
           .currentTimeMillis() - x1}"
       )
       val either = res.toEither[DeployServiceResponse]
-      (session.set("client", client), either.right.get)
+      either match {
+        case Right(response) =>
+          (session.set("client", client), response)
+        case Left(errors) => throw new RuntimeException(s"Deploy failed because: ${errors.mkString}")
+      }
     }
   }
 
