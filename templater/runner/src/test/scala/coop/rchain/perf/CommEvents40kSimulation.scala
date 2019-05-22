@@ -3,7 +3,7 @@ import java.nio.file.{Files, Paths}
 
 import collection.JavaConverters._
 import com.typesafe.config.ConfigFactory
-import io.gatling.core.Predef.{Simulation, atOnceUsers, scenario}
+import io.gatling.core.Predef.{atOnceUsers, scenario, Simulation}
 import io.gatling.core.Predef._
 
 import scala.language.postfixOps
@@ -18,18 +18,21 @@ class CommEvents40kSimulation extends Simulation {
   import RNodeActionDSL._
 
   val iterationsCount = 1
-  val path = Paths.get(Paths.get("").toAbsolutePath().normalize().toString(),
-                       "../../simulations/mvcepp/loop-mvcepp.rho")
+  val path = Paths.get(
+    Paths.get("").toAbsolutePath().normalize().toString(),
+    "../../simulations/mvcepp/loop-mvcepp.rho"
+  )
 
-  val conf = ConfigFactory.load()
+  val conf   = ConfigFactory.load()
   val rnodes = conf.getStringList("rnodes").asScala.toList
 
   val rhoContent = Source.fromFile(path.toUri).mkString
-  val contracts = List((path.getFileName.toString, rhoContent))
+  val contracts  = List((path.getFileName.toString, rhoContent))
 
   println(
     s"will run ${iterationsCount} iterations of minimal comm event producing program on ${rnodes
-      .mkString(", ")}")
+      .mkString(", ")}"
+  )
   println("-------------------------------")
   println(contracts)
   println("-------------------------------")

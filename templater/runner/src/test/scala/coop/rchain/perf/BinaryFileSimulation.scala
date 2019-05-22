@@ -3,7 +3,7 @@ import java.nio.file.{Files, Paths}
 
 import collection.JavaConverters._
 import com.typesafe.config.ConfigFactory
-import io.gatling.core.Predef.{Simulation, atOnceUsers, scenario}
+import io.gatling.core.Predef.{atOnceUsers, scenario, Simulation}
 import io.gatling.core.Predef._
 
 import scala.language.postfixOps
@@ -18,18 +18,19 @@ class BinaryFileSimulation100kb extends BinaryFileSimulation(1, 100 * 1024)
 
 //class BinaryFileSimulation10MB extends BinaryFileSimulation(4,10*1024*1024)
 
-abstract class BinaryFileSimulation(fileId: Int, fileSizeInBytes: Int)
-    extends Simulation {
+abstract class BinaryFileSimulation(fileId: Int, fileSizeInBytes: Int) extends Simulation {
   import RNodeActionDSL._
   import BinaryFileSimulation._
 
-  val path = Paths.get(Paths.get("").toAbsolutePath().normalize().toString(),
-                       "../../simulations/binary/a_binMapStore.rho")
+  val path = Paths.get(
+    Paths.get("").toAbsolutePath().normalize().toString(),
+    "../../simulations/binary/a_binMapStore.rho"
+  )
 
-  val conf = ConfigFactory.load()
+  val conf   = ConfigFactory.load()
   val rnodes = conf.getStringList("rnodes").asScala.toList
 
-  val rhoContent = Source.fromFile(path.toUri).mkString
+  val rhoContent            = Source.fromFile(path.toUri).mkString
   val binMapInstallContract = (path.getFileName.toString, rhoContent)
 
   val storeScript = s"""
@@ -57,14 +58,12 @@ abstract class BinaryFileSimulation(fileId: Int, fileSizeInBytes: Int)
     }
 
   val scnSave = scenario("SaveTo_BinaryFileStore")
-    .foreach(List((s"saveToStore_$fileSizeInBytes.rho", storeScript)),
-             "contract") {
+    .foreach(List((s"saveToStore_$fileSizeInBytes.rho", storeScript)), "contract") {
       exec(deploy()).exec(propose())
     }
 
   val scnLoad = scenario("LoadFrom_BinaryFileStore")
-    .foreach(List((s"loadFromStore_$fileSizeInBytes.rho", loadScript)),
-             "contract") {
+    .foreach(List((s"loadFromStore_$fileSizeInBytes.rho", loadScript)), "contract") {
       exec(deploy()).exec(propose())
     }
 
@@ -84,8 +83,8 @@ abstract class BinaryFileSimulation(fileId: Int, fileSizeInBytes: Int)
 
 object BinaryFileSimulation {
   def strOfSize(fileSizeInBytes: Int): String = {
-    val start = 'a'.toInt
-    val range = 'z'.toInt - start
+    val start             = 'a'.toInt
+    val range             = 'z'.toInt - start
     val sb: StringBuilder = new StringBuilder()
     for (i <- 0 to fileSizeInBytes) {
       sb += (start + (i % range)).toChar
