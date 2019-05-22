@@ -3,7 +3,7 @@ package coop.rchain.perf
 import java.nio.file.{FileSystems, Files, Path, Paths}
 
 import io.gatling.app.Gatling
-import io.gatling.core.Predef.{Simulation, scenario}
+import io.gatling.core.Predef.{scenario, Simulation}
 import io.gatling.core.Predef._
 import io.gatling.core.config.GatlingPropertiesBuilder
 
@@ -26,15 +26,14 @@ object ContinuousRunner {
   class ContinuousSimulation extends Simulation {
     import RNodeActionDSL._
 
-    val contractsPath = System.getProperty("path")
-    val hosts = System.getProperty("hosts")
-    val sessions = Integer.getInteger("sessions", 1)
-    val loops = Integer.getInteger("loops", 1)
+    val contractsPath            = System.getProperty("path")
+    val hosts                    = System.getProperty("hosts")
+    val sessions                 = Integer.getInteger("sessions", 1)
+    val loops                    = Integer.getInteger("loops", 1)
     val deploy2ProposeRatio: Int = Integer.getInteger("ratio", 1)
 
-    val basePath = Paths.get(contractsPath)
-    private val termsWithNames: List[(String, String)] = getAllRhosFromPath(
-      basePath)
+    val basePath                                       = Paths.get(contractsPath)
+    private val termsWithNames: List[(String, String)] = getAllRhosFromPath(basePath)
 
     println("will run contracts:")
     termsWithNames.map(_._1).foreach(println)
