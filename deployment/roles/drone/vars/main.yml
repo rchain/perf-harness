@@ -31,7 +31,7 @@ drone_secret: !vault |
 # Set this to comma separated list of GitHub organizations whose users can use
 # this Drone instance.
 #
-drone_orgs: rchain,lukasz-golebiewski-org
+drone_orgs: rchain,lukasz-golebiewski-org,whiteblock
 
 # Set this to comma separated list of GitHub users who can manage this Drone
 # instance.
