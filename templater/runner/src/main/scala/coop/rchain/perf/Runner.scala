@@ -45,7 +45,7 @@ object Propose {
     val x1                        = System.currentTimeMillis()
     val (cn, _): (String, String) = session("contract").as[(String, String)]
     println(s"starting propose of $cn on client ${client.full} session ${session.userId}")
-    val r = client.client.createBlock(Empty())
+    val r = client.grpcPropose.propose(Empty())
     r.map { res =>
       println(
         s"finished propose of $cn on client ${client.full} session ${session.userId}, took: ${System
@@ -80,7 +80,7 @@ object Deploy {
       .withDeployer(ByteString.copyFrom(Ed25519.toPublic(defaultSec).bytes))
       .withPhloLimit(Integer.MAX_VALUE)
       .withPhloPrice(1)
-    val r = client.client.doDeploy(sign(defaultSec, d))
+    val r = client.grpcDeploy.doDeploy(sign(defaultSec, d))
     r.map { res =>
       println(
         s"finished deploy of $cn on client ${client.full} session ${session.userId}, took: ${System
@@ -90,7 +90,8 @@ object Deploy {
       either match {
         case Right(response) =>
           (session.set("client", client), response)
-        case Left(errors) => throw new RuntimeException(s"Deploy failed because: ${errors.mkString}")
+        case Left(errors) =>
+          throw new RuntimeException(s"Deploy failed because: ${errors.mkString}")
       }
     }
   }
@@ -129,7 +130,7 @@ object GetDataFromBlock {
 
     val par = Par().withExprs(Seq(Expr().withGString(dataName)))
     val parData =
-      client.client.listenForDataAtName(DataAtNameQuery(0, Some(par)))
+      client.grpcDeploy.listenForDataAtName(DataAtNameQuery(0, Some(par)))
 
     parData.map { either =>
       val res: Either[Seq[String], DeployServiceResponse] =
@@ -263,7 +264,12 @@ abstract class RNodeActionBuilder extends ActionBuilder {
 
 case class RNodeProtocol(hosts: List[(String, Int)]) extends Protocol {}
 
-case class ClientWithDetails(client: DeployServiceStub, host: String, port: Int) {
+case class ClientWithDetails(
+    grpcDeploy: DeployServiceStub,
+    grpcPropose: ProposeServiceGrpc.ProposeServiceStub,
+    host: String,
+    port: Int
+) {
   def full = s"$host:$port"
 }
 
@@ -304,7 +310,12 @@ object RNodeProtocol {
                 .forAddress(host, port)
                 .usePlaintext()
                 .build
-              ClientWithDetails(DeployServiceGrpc.stub(channel), host, port)
+              ClientWithDetails(
+                DeployServiceGrpc.stub(channel),
+                ProposeServiceGrpc.stub(channel),
+                host,
+                port
+              )
           }
         val pool = RoundRobin(clients.toIndexedSeq)
         RNodeComponents(rnodeProtocol, clients, pool)
