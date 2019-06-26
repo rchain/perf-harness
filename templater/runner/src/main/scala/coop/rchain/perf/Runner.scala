@@ -3,17 +3,15 @@ package coop.rchain.perf
 import akka.actor.ActorSystem
 import com.google.protobuf.ByteString
 import com.google.protobuf.empty.Empty
-import coop.rchain.casper.protocol.DeployServiceGrpc.{
-  DeployServiceBlockingClient,
-  DeployServiceStub
-}
+import coop.rchain.casper.protocol.DeployServiceGrpc.{DeployServiceStub}
 import coop.rchain.casper.protocol._
 import coop.rchain.crypto.{PrivateKey, PublicKey}
 import coop.rchain.crypto.codec.Base16
 import coop.rchain.crypto.hash.Blake2b256
 import coop.rchain.crypto.signatures._
-import coop.rchain.models.either.EitherHelper
 import coop.rchain.models.{EVar, Expr, Par}
+import coop.rchain.crypto.signatures.Secp256k1
+import coop.rchain.crypto.PrivateKey
 import io.gatling.commons.util.RoundRobin
 import io.gatling.commons.stats.{KO, OK}
 import io.gatling.core.CoreComponents
@@ -63,9 +61,8 @@ object Propose {
 }
 
 object Deploy {
-  private val defaultSec = PrivateKey(
-    Base16.unsafeDecode("b18e1d0045995ec3d010c387ccfeb984d783af8fbb0f40fa7db126d889f6dadd")
-  )
+  private final val (privateKey, _) =
+    Secp256k1.newKeyPair
 
   def deploy(
       session: Session
@@ -77,10 +74,10 @@ object Deploy {
     val d = DeployData()
       .withTimestamp(System.currentTimeMillis())
       .withTerm(contract)
-      .withDeployer(ByteString.copyFrom(Ed25519.toPublic(defaultSec).bytes))
+      .withDeployer(ByteString.copyFrom(Secp256k1.toPublic(privateKey).bytes))
       .withPhloLimit(Integer.MAX_VALUE)
       .withPhloPrice(1)
-    val r = client.grpcDeploy.doDeploy(sign(defaultSec, d))
+    val r = client.grpcDeploy.doDeploy(sign(privateKey, d))
     r.map { res =>
       println(
         s"finished deploy of $cn on client ${client.full} session ${session.userId}, took: ${System
