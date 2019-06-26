@@ -47,7 +47,8 @@ lazy val runner = (project in file("runner"))
       config,
     ),
     dependencyOverrides ++= Seq(
-	"org.bouncycastle" % "bcprov-jdk15on" % "1.59",
+	"org.bouncycastle" % "bcprov-jdk15on" % "1.61",
+	"org.bouncycastle" % "bcpkix-jdk15on" % "1.61",
 	"com.typesafe.scala-logging" %% "scala-logging" % "3.9.0",
 	"org.hdrhistogram" %  "HdrHistogram" % "2.1.11",
     "com.fasterxml.jackson.core"%"jackson-databind" %"2.9.8",

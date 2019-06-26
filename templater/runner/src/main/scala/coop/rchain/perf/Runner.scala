@@ -3,17 +3,15 @@ package coop.rchain.perf
 import akka.actor.ActorSystem
 import com.google.protobuf.ByteString
 import com.google.protobuf.empty.Empty
-import coop.rchain.casper.protocol.DeployServiceGrpc.{
-  DeployServiceBlockingClient,
-  DeployServiceStub
-}
+import coop.rchain.casper.protocol.DeployServiceGrpc.{DeployServiceStub}
 import coop.rchain.casper.protocol._
 import coop.rchain.crypto.{PrivateKey, PublicKey}
 import coop.rchain.crypto.codec.Base16
 import coop.rchain.crypto.hash.Blake2b256
 import coop.rchain.crypto.signatures._
-import coop.rchain.models.either.EitherHelper
 import coop.rchain.models.{EVar, Expr, Par}
+import coop.rchain.crypto.signatures.Secp256k1
+import coop.rchain.crypto.PrivateKey
 import io.gatling.commons.util.RoundRobin
 import io.gatling.commons.stats.{KO, OK}
 import io.gatling.core.CoreComponents
@@ -45,7 +43,7 @@ object Propose {
     val x1                        = System.currentTimeMillis()
     val (cn, _): (String, String) = session("contract").as[(String, String)]
     println(s"starting propose of $cn on client ${client.full} session ${session.userId}")
-    val r = client.client.createBlock(Empty())
+    val r = client.grpcPropose.propose(Empty())
     r.map { res =>
       println(
         s"finished propose of $cn on client ${client.full} session ${session.userId}, took: ${System
@@ -63,9 +61,8 @@ object Propose {
 }
 
 object Deploy {
-  private val defaultSec = PrivateKey(
-    Base16.unsafeDecode("b18e1d0045995ec3d010c387ccfeb984d783af8fbb0f40fa7db126d889f6dadd")
-  )
+  private final val (privateKey, _) =
+    Secp256k1.newKeyPair
 
   def deploy(
       session: Session
@@ -77,10 +74,10 @@ object Deploy {
     val d = DeployData()
       .withTimestamp(System.currentTimeMillis())
       .withTerm(contract)
-      .withDeployer(ByteString.copyFrom(Ed25519.toPublic(defaultSec).bytes))
+      .withDeployer(ByteString.copyFrom(Secp256k1.toPublic(privateKey).bytes))
       .withPhloLimit(Integer.MAX_VALUE)
       .withPhloPrice(1)
-    val r = client.client.doDeploy(sign(defaultSec, d))
+    val r = client.grpcDeploy.doDeploy(sign(privateKey, d))
     r.map { res =>
       println(
         s"finished deploy of $cn on client ${client.full} session ${session.userId}, took: ${System
@@ -90,7 +87,8 @@ object Deploy {
       either match {
         case Right(response) =>
           (session.set("client", client), response)
-        case Left(errors) => throw new RuntimeException(s"Deploy failed because: ${errors.mkString}")
+        case Left(errors) =>
+          throw new RuntimeException(s"Deploy failed because: ${errors.mkString}")
       }
     }
   }
@@ -129,7 +127,7 @@ object GetDataFromBlock {
 
     val par = Par().withExprs(Seq(Expr().withGString(dataName)))
     val parData =
-      client.client.listenForDataAtName(DataAtNameQuery(0, Some(par)))
+      client.grpcDeploy.listenForDataAtName(DataAtNameQuery(0, Some(par)))
 
     parData.map { either =>
       val res: Either[Seq[String], DeployServiceResponse] =
@@ -263,7 +261,12 @@ abstract class RNodeActionBuilder extends ActionBuilder {
 
 case class RNodeProtocol(hosts: List[(String, Int)]) extends Protocol {}
 
-case class ClientWithDetails(client: DeployServiceStub, host: String, port: Int) {
+case class ClientWithDetails(
+    grpcDeploy: DeployServiceStub,
+    grpcPropose: ProposeServiceGrpc.ProposeServiceStub,
+    host: String,
+    port: Int
+) {
   def full = s"$host:$port"
 }
 
@@ -304,7 +307,12 @@ object RNodeProtocol {
                 .forAddress(host, port)
                 .usePlaintext()
                 .build
-              ClientWithDetails(DeployServiceGrpc.stub(channel), host, port)
+              ClientWithDetails(
+                DeployServiceGrpc.stub(channel),
+                ProposeServiceGrpc.stub(channel),
+                host,
+                port
+              )
           }
         val pool = RoundRobin(clients.toIndexedSeq)
         RNodeComponents(rnodeProtocol, clients, pool)
