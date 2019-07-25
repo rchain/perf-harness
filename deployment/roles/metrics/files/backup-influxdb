@@ -22,7 +22,8 @@ remove_tarball () {
 
 
 main () {
-    local container=$(docker ps --filter 'name=influxdb' --quiet)
+    local container
+    container=$(docker ps --filter 'name=influxdb' --quiet)
     if [[ $container = *\ * ]]; then
         echo "Multiple containers matched: $container"
         return 1
@@ -31,7 +32,8 @@ main () {
     trap remove_temporary_directory EXIT
     backup_dir=$(mktemp --directory --tmpdir=/tmp/influxdb)
 
-    local backup_dir_basename=$(basename "$backup_dir")
+    local backup_dir_basename
+    backup_dir_basename=$(basename "$backup_dir")
     docker exec "$container" influxd backup -portable -database rnode "/tmp/$backup_dir_basename"
 
     tarball_basename="rnode.tar"
@@ -39,6 +41,7 @@ main () {
     tar --create --verbose --directory="$backup_dir" --file="$tarball_basename" .
 
     gsutil cp "$tarball_basename" "gs://rchain-backups/perf-harness-influxdb/${tarball_basename}"
+    gsutil cp "/var/lib/grafana/grafana.db" "gs://rchain-backups/perf-harness-grafana/grafana.db"
 
     curl --header "Content-Type: application/json" --request POST --data '{"host": "perf-bootstrap", "service": "influxdb-database-backup", "status": "0", "output": ""}' http://nagios.c.developer-222401.internal:6315/submit_result
 }
