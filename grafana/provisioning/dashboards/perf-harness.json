@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 3,
   "links": [],
   "panels": [
     {
@@ -55,7 +55,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "consume-rate@$tag_host",
+          "alias": "consume@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -70,9 +70,10 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE operation = 'rchain.rspace.consume' AND $timeFilter GROUP BY time(1s), host",
+          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE (\"operation\" = 'rchain.rspace.consume') AND $timeFilter GROUP BY time(1s), \"host\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -93,7 +94,7 @@
           "tags": []
         },
         {
-          "alias": "produce-rate@$tag_host",
+          "alias": "produce@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -110,7 +111,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE operation = 'rchain.rspace.produce' AND $timeFilter GROUP BY time(1s), host",
+          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE (\"operation\" = 'rchain.rspace.produce') AND $timeFilter GROUP BY time(1s), \"host\"",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -131,7 +132,7 @@
           "tags": []
         },
         {
-          "alias": "install-rate@$tag_host",
+          "alias": "install@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -148,7 +149,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE operation = 'rchain.rspace.install' AND $timeFilter GROUP BY time(1s), host",
+          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE (\"operation\" = 'rchain.rspace.install') AND $timeFilter GROUP BY time(1s), \"host\"",
           "rawQuery": true,
           "refId": "C",
           "resultFormat": "time_series",
@@ -246,7 +247,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "consume-rate@$tag_host",
+          "alias": "consume@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -284,7 +285,7 @@
           "tags": []
         },
         {
-          "alias": "produce-rate@$tag_host",
+          "alias": "produce@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -399,7 +400,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "replay-consume-rate@$tag_host",
+          "alias": "replay-consume@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -416,7 +417,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE operation = 'rchain.rspace.replay.consume' AND $timeFilter GROUP BY time(1s), host",
+          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE (\"operation\" = 'rchain.rspace.replay.consume') AND $timeFilter GROUP BY time(1s), \"host\"",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -437,7 +438,7 @@
           "tags": []
         },
         {
-          "alias": "replay-produce-rate@$tag_host",
+          "alias": "replay-produce@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -454,9 +455,47 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE operation = 'rchain.rspace.replay.produce' AND $timeFilter GROUP BY time(1s), host",
+          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE (\"operation\" = 'rchain.rspace.replay.produce') AND $timeFilter GROUP BY time(1s), \"host\"",
           "rawQuery": true,
           "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "replay-install@$tag_host",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT sum(\"count\") FROM \"span.processing-time\" WHERE (\"operation\" = 'rchain.rspace.replay.install') AND $timeFilter GROUP BY time(1s), \"host\"",
+          "rawQuery": true,
+          "refId": "C",
           "resultFormat": "time_series",
           "select": [
             [
@@ -552,7 +591,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "replay-consume-rate@$tag_host",
+          "alias": "replay-consume@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -590,7 +629,7 @@
           "tags": []
         },
         {
-          "alias": "replay-produce-rate@$tag_host",
+          "alias": "replay-produce@$tag_host",
           "groupBy": [
             {
               "params": [
@@ -631,7 +670,7 @@
       "thresholds": [],
       "timeFrom": null,
       "timeShift": null,
-      "title": "ReplaceRSpace COMM events",
+      "title": "ReplayRSpace COMM event",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -676,8 +715,8 @@
     "list": []
   },
   "time": {
-    "from": "now/w",
-    "to": "now/w"
+    "from": "now/d",
+    "to": "now/d"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -705,7 +744,7 @@
     ]
   },
   "timezone": "",
-  "title": "InfluxDB RNode COMM rate",
-  "uid": "WCPeHZ9mz",
-  "version": 4
+  "title": "Performance Harness COMM rate",
+  "uid": "xf9IIZrmk",
+  "version": 7
 }
