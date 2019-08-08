@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 10,
   "links": [],
   "panels": [
     {
@@ -23,7 +23,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "InfluxDB",
+      "datasource": "testnet1",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -172,6 +172,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "RSpace operations",
       "tooltip": {
@@ -215,7 +216,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "InfluxDB",
+      "datasource": "testnet1",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -325,6 +326,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "RSpace COMM events",
       "tooltip": {
@@ -368,7 +370,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "InfluxDB",
+      "datasource": "testnet1",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -516,6 +518,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "ReplayRSpace operations",
       "tooltip": {
@@ -559,7 +562,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "InfluxDB",
+      "datasource": "testnet1",
       "fill": 1,
       "gridPos": {
         "h": 9,
@@ -669,6 +672,7 @@
       ],
       "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
       "title": "ReplayRSpace COMM event",
       "tooltip": {
@@ -716,7 +720,7 @@
   },
   "time": {
     "from": "now/d",
-    "to": "now/d"
+    "to": "now"
   },
   "timepicker": {
     "refresh_intervals": [
@@ -744,7 +748,7 @@
     ]
   },
   "timezone": "",
-  "title": "perf-harness",
-  "uid": "xf9IIZrmk",
-  "version": 7
+  "title": "testnet1-comm-rate",
+  "uid": "xf9IIZrmq",
+  "version": 5
 }

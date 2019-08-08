@@ -10,7 +10,7 @@ networks:
 
 services:
   grafana-ui:
-    image: grafana/grafana:5.2.1
+    image: grafana/grafana:5.4.3
     networks:
       - metrics
     ports:
@@ -22,7 +22,7 @@ services:
       - ./grafana/provisioning/:/etc/grafana/provisioning/
 
   influxdb:
-    image: influxdb:1.7.3
+    image: influxdb:1.7.7
     networks:
       - metrics
     ports:
