@@ -15,8 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 6,
-  "iteration": 1565265325612,
+  "iteration": 1565266032350,
   "links": [],
   "panels": [
     {
@@ -66,8 +65,8 @@
       "scopedVars": {
         "node": {
           "selected": true,
-          "text": "node2",
-          "value": "node2"
+          "text": "node1",
+          "value": "node1"
         }
       },
       "seriesOverrides": [
@@ -277,6 +276,82 @@
             ]
           ],
           "tags": []
+        },
+        {
+          "alias": "mmap-rss",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"total_rss\" FROM \"process.mmap\" WHERE $timeFilter and host = '$node'",
+          "rawQuery": true,
+          "refId": "F",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
+        },
+        {
+          "alias": "mmap-private-dirty",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "orderByTime": "ASC",
+          "policy": "default",
+          "query": "SELECT \"total_private_dirty\" FROM \"process.mmap\" WHERE $timeFilter and host = '$node'",
+          "rawQuery": true,
+          "refId": "G",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": []
         }
       ],
       "thresholds": [],
@@ -330,8 +405,8 @@
         "allValue": null,
         "current": {
           "tags": [],
-          "text": "node2",
-          "value": "node2"
+          "text": "node1",
+          "value": "node1"
         },
         "hide": 0,
         "includeAll": false,
@@ -340,12 +415,12 @@
         "name": "node",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "node1",
             "value": "node1"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "node2",
             "value": "node2"
           },
