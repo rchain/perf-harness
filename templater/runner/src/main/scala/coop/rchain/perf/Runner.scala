@@ -43,7 +43,7 @@ object Propose {
     val x1                        = System.currentTimeMillis()
     val (cn, _): (String, String) = session("contract").as[(String, String)]
     println(s"starting propose of $cn on client ${client.full} session ${session.userId}")
-    val r = client.grpcPropose.propose(Empty())
+    val r = client.grpcPropose.propose(PrintUnmatchedSendsQuery(false))
     r.map { res =>
       println(
         s"finished propose of $cn on client ${client.full} session ${session.userId}, took: ${System
