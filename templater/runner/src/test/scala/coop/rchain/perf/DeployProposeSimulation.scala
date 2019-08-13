@@ -18,7 +18,32 @@ class DeployProposeSimulation extends Simulation {
       |contract @"dupe"(@depth) = {
       |  if (depth <= 0) { Nil } else { @"dupe"!(depth-1) | @"dupe"!(depth-1) | @"dupe"!(depth-1) | @"dupe"!(depth-1) | @"dupe"!(depth-1) | @"dupe"!(depth-1) | @"dupe"!(depth-1) | @"dupe"!(depth-1) | @"dupe"!(depth-1) | @"dupe"!(depth-1) }
       |} |
-      |@"dupe"!(5)
+      |@"dupe"!(3)
+    """.stripMargin
+
+  val setupWide =
+    """
+      |contract @"makeWide"(@n, ret) = {
+      |new loop in {
+      |  contract loop(@k, @acc) = {
+      |    if (k == 0) { ret!(acc) }
+      |    else {
+      |      new name in {
+      |        loop!(k - 1, {acc | for(_ <- name){ Nil } | name!(Nil)})
+      |      }
+      |    }
+      |  } |
+      |  loop!(n, Nil)
+      |}
+      |} |
+      |@"makeWide"!(500, "myWide")
+    """.stripMargin
+
+  val runWide = 
+    """
+      |for(@wide <- @"myWide") {
+      |  wide //execute wide processes
+      |}
     """.stripMargin
 
   val conf   = ConfigFactory.load()
@@ -34,7 +59,7 @@ class DeployProposeSimulation extends Simulation {
             List((p.getFileName.toString, Source.fromFile(p.toUri).mkString))
         }
     )
-    .getOrElse(List(("sum-list", defaultTerm)))
+    .getOrElse(List(("a-setup-wide", setupWide), ("b-run-wide", runWide)))
 
   println(s"will run simulation on ${rnodes.mkString(", ")}, contracts:")
   println("-------------------------------")
