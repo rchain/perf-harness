@@ -130,7 +130,7 @@ pipeline:
       event: push
 
   gatling-custom-contract:
-    image: hseeberger/scala-sbt
+    image: hseeberger/scala-sbt:8u212_1.2.8_2.12.9
     environment:
       - RCHAIN_REPO_HASH=${RNODE_IMAGE_VERSION}
     commands:
@@ -146,7 +146,7 @@ pipeline:
       environment: custom_contract
 
   gatling-custom-commit:
-    image: hseeberger/scala-sbt
+    image: hseeberger/scala-sbt:8u212_1.2.8_2.12.9
     environment:
       - RCHAIN_REPO_HASH=${RCHAIN_COMMIT_HASH}
     commands:
