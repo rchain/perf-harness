@@ -27,7 +27,7 @@ new buildTree,
    * Roughly 2^(n + 1) comms will occur. Use -1 for essentially unlimited comms.
    * Other lines will not need to be changed by end users.
    */
-  buildTree!(10) |
+  buildTree!(16) |
 
   contract buildTree(@depth) = {
     // Always start the tree with a root of 1
