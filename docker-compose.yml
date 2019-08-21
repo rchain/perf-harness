@@ -27,6 +27,7 @@ services:
       - metrics
     ports:
       - 8090:8090/udp
+      - 8091:8091/udp
     volumes:
       - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
       - /var/lib/influxdb:/var/lib/influxdb
